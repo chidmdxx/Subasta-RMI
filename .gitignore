@@ -4,3 +4,5 @@
 *.jar
 *.war
 *.ear
+/Tienda/nbproject/private/
+/Cliente/nbproject/private/
