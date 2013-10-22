@@ -14,6 +14,6 @@ import java.util.Vector;
  */
 public interface ClienteInterface extends java.rmi.Remote{
     
-    public boolean mandarPrecioNuevo( double precio ) throws java.rmi.RemoteException;
+    public boolean mandarPrecioNuevo( String producto, float nuevoPrecio ) throws java.rmi.RemoteException;
     
 }
