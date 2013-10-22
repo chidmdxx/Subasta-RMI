@@ -10,6 +10,10 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Vector;
+import datos.*;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import tienda.*;
 
 
 /**
@@ -18,16 +22,30 @@ import java.util.Vector;
  */
 public class Cliente implements ClienteInterface{
 
-    Hashtable productos;    
+    Hashtable productos;   
+    Agente tienda;  
+    Registry registry;
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public void main(String[] args){
+ 
         // TODO code application logic here
     }
 
     
-    
+    public void encontrarTienda()
+    {
+        try
+        {
+            Registry registry = LocateRegistry.getRegistry();
+            tienda=(Agente)registry.lookup("Agente");
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
     
     @Override
     public boolean mandarPrecioNuevo(String producto, float nuevoPrecio) throws RemoteException {

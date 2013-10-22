@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cliente;
+package tienda;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -10,6 +10,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Vector;
+import datos.*;
 
 /**
  *
@@ -86,7 +87,7 @@ public class Tienda implements Agente {
     public static void main(String[] args) {
         try {
             Tienda tienda = new Tienda();
-            Agente stub = (Agente) UnicastRemoteObject.exportObject(tienda, 0);//Va 0 ahí?
+            Agente stub = (Agente) UnicastRemoteObject.exportObject(tienda, 0);//Va 0 ahí? // creo que si
             Registry registry = LocateRegistry.getRegistry();
             registry.bind("Agente", stub);
             System.err.println("Server ready");
@@ -94,4 +95,6 @@ public class Tienda implements Agente {
             System.out.println(e.getMessage());
         }
     }
+
+
 }

@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cliente;
+package tienda;
 
 import java.util.Vector;
+import datos.Producto;
 
 /**
  *
