@@ -235,13 +235,13 @@ public class ClienteApplet extends javax.swing.JApplet {
         String str;      
         str = jTextField2.getText();
         
-        if(cliente.RegistrarUsuario(str)){
+        /*if(cliente.RegistrarUsuario(str)){
             jLabel5.setText("Conexón exitosa!");
             jDialog1.setVisible(true);
         }else{
             jLabel5.setText("Conexón fallida!");
             jDialog1.setVisible(true);
-        }
+        }*/
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
