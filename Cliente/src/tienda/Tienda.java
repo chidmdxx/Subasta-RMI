@@ -36,7 +36,6 @@ public class Tienda implements Agente {
             System.out.println("Agregando un nuevo usuario: " + nombre);
             usuarios.put(nombre, nombre);
             return true;
-
         } else {
             return false;
         }
