@@ -2,15 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package tienda;
 
+import datos.Oferta;
+import datos.Producto;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Vector;
-import datos.*;
+//import datos.Oferta;
+//import datos.Producto;
 
 /**
  *
@@ -26,9 +30,9 @@ public class Tienda implements Agente {
     Hashtable<String, Oferta> ofertas;
 
     public Tienda() {
-        usuarios = new Hashtable<String,String>();
-        productos = new Hashtable<String, Producto>();
-        ofertas = new Hashtable<String, Oferta>();
+        usuarios = new Hashtable<>();
+        productos = new Hashtable<>();
+        ofertas = new Hashtable<>();
     }
 
     public boolean registraUsuario(String nombre) throws RemoteException {
