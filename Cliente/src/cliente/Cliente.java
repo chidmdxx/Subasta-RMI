@@ -22,7 +22,7 @@ import tienda.*;
  */
 public class Cliente implements ClienteInterface{
 
-    Hashtable productos;   
+    Hashtable<String, Producto> productos;
     Agente tienda;  
     Registry registry;
     /**
