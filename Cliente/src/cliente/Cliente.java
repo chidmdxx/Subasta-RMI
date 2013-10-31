@@ -15,38 +15,31 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import tienda.*;
 
-
 /**
  *
  * @author Rachid
  */
-public class Cliente implements ClienteInterface{
+public class Cliente implements ClienteInterface {
 
     Hashtable<String, Producto> productos;
-    Agente tienda;  
+    Agente tienda;
     Registry registry;
+
     /**
      * @param args the command line arguments
      */
-    public void main(String[] args){
- 
+    public void main(String[] args) {
         // TODO code application logic here
     }
 
-    
-    public void encontrarTienda()
-    {
-        try
-        {
+    public void encontrarTienda() {
+        try {
             Registry registry = LocateRegistry.getRegistry();
-            tienda=(Agente)registry.lookup("Agente");
-        }
-        catch (Exception ex)
-        {
-            
+            tienda = (Agente) registry.lookup("Agente");
+        } catch (Exception ex) {
         }
     }
-    
+
     @Override
     public boolean mandarPrecioNuevo(String producto, float nuevoPrecio) throws RemoteException {
         if (productos.containsKey(producto)) {
@@ -55,13 +48,25 @@ public class Cliente implements ClienteInterface{
             infoProd = (Producto) productos.get(producto);
 
             if (infoProd.actualizaPrecio(nuevoPrecio)) {
-                
+
                 return true;
 
             } else {
                 return false;
             }
         } else {
+            return false;
+        }
+    }
+
+    public boolean RegistrarUsuario(String str) {
+        try {
+            if (tienda.registraUsuario(str)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (RemoteException e) {
             return false;
         }
     }
