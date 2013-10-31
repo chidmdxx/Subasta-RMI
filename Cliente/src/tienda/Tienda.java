@@ -21,14 +21,14 @@ public class Tienda implements Agente {
     /**
      * @param args the command line arguments
      */
-    Hashtable usuarios;
-    Hashtable productos;
-    Hashtable ofertas;
+    Hashtable<String, String> usuarios;
+    Hashtable<String, Producto> productos;
+    Hashtable<String, Oferta> ofertas;
 
     public Tienda() {
-        usuarios = new Hashtable();
-        productos = new Hashtable();
-        ofertas = new Hashtable();
+        usuarios = new Hashtable<String,String>();
+        productos = new Hashtable<String, Producto>();
+        ofertas = new Hashtable<String, Oferta>();
     }
 
     public boolean registraUsuario(String nombre) throws RemoteException {
