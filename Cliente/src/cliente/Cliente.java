@@ -1,19 +1,23 @@
+package cliente;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cliente;
 
+
+import datos.Producto;
+import tienda.Agente;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Vector;
-import datos.*;
+//import datos.*;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import tienda.*;
+//import tienda.*;
 
 
 /**
