@@ -18,5 +18,6 @@ import java.rmi.RemoteException;
 public interface ClienteInterface extends Remote{
     
     boolean mandarPrecioNuevo( String producto, float nuevoPrecio ) throws RemoteException;
-    
+    boolean mandarProductoNuevo(String producto) throws RemoteException;
+    String getNombre() throws RemoteException;
 }

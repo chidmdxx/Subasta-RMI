@@ -12,8 +12,8 @@ package datos;
  */
 public class Oferta implements java.io.Serializable{
     String comprador;
-    String producto;
-    float monto;
+    public String producto;
+    public float monto;
     
     public Oferta( String c, String p, float m ) {
         comprador = c;
