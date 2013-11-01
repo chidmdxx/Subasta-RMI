@@ -1,0 +1,12 @@
+grant codeBase "file:/C:/Users/rachi_000/Documents/GitHub/Subasta-RMI/Cliente/src/-" {
+
+    permission java.security.AllPermission;
+
+};
+
+
+grant codeBase "file:/C:/Users/rachi_000/Documents/GitHub/Subasta-RMI/build/-" {
+
+    permission java.security.AllPermission;
+
+};
