@@ -261,13 +261,19 @@ public class ClienteApplet extends javax.swing.JApplet {
         precio = jTextField3.getText();
         
         
-        if(cliente.tienda.agregaProductoALaVenta(cliente.nombre, producto, Float.parseFloat(precio))){
+        try
+        {
+            if(cliente.tienda.agregaProductoALaVenta(cliente.nombre, producto, Float.parseFloat(precio))){
             jLabel5.setText("Conexón exitosa!");
             jDialog1.setVisible(true);
-            
         
+                
         }else
-            throw new RemoteException();
+            jLabel5.setText("Conexón fallida!");
+        }
+        catch (RemoteException ex)
+                {
+                }
         
         
         /*if(cliente.tienda.agregaProductoALaVenta(cliente.nombre, producto, Float.parseFloat(precio)));
