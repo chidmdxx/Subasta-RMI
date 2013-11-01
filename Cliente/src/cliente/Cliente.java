@@ -34,15 +34,26 @@ public class Cliente implements ClienteInterface {
      */
     public void main(String[] args) {
         // TODO code application logic here
+        try{
+        Registry registry = LocateRegistry.getRegistry();
+            tienda=(Agente)registry.lookup("Agente");
+            //el codigo del dr es:
+            //String response = stub.sayHello();
+	    //System.out.println("response: " + response);
+            //falta agregar la interfaz aqui
+        }catch (Exception e){
+            System.err.println("Client exception: " + e.toString());
+	    e.printStackTrace();
+        }
     }
-
+    /*
     public void encontrarTienda() {
         try {
             Registry registry = LocateRegistry.getRegistry();
             tienda = (Agente) registry.lookup("Agente");
         } catch (Exception ex) {
         }
-    }
+    }*/
 
     @Override
     public boolean mandarPrecioNuevo(String producto, float nuevoPrecio) throws RemoteException {
