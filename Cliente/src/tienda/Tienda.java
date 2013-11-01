@@ -30,17 +30,16 @@ public class Tienda implements Agente{
     /**
      * @param args the command line arguments
      */
-    Hashtable<String, String> usuarios;
     Hashtable<String, Producto> productos;
     Hashtable<String, Oferta> ofertas;
-    Vector<ClienteInterface> stubs;
+    Hashtable<String, ClienteInterface> usuarios;
     Registry registry;
     
 
     public Tienda() {
-        usuarios = new Hashtable<>();
         productos = new Hashtable<>();
         ofertas = new Hashtable<>();
+        usuarios=new Hashtable<>();
         try {
             registry = LocateRegistry.getRegistry();
         } catch (RemoteException ex) {
@@ -51,18 +50,14 @@ public class Tienda implements Agente{
     public synchronized boolean registraUsuario(String nombre) throws RemoteException {
         if (!usuarios.containsKey(nombre)) {
             System.out.println("Agregando un nuevo usuario: " + nombre);
-            usuarios.put(nombre, nombre);
+            ClienteInterface stub;
             try {
-                stubs.add((ClienteInterface)registry.lookup(nombre));
-            } catch (NotBoundException ex) {
-                usuarios.remove(nombre);
-                Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            } catch (AccessException ex) {
-                usuarios.remove(nombre);
+                stub=(ClienteInterface)registry.lookup(nombre);
+            } catch (    NotBoundException | AccessException ex) {
                 Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
+            usuarios.put(nombre,stub);
             return true;
         } else {
             return false;
@@ -74,15 +69,6 @@ public class Tienda implements Agente{
         if (usuarios.containsKey(nombre)) {
             System.out.println("Borrando usuario: " + nombre);
             usuarios.remove(nombre);
-            try {
-                stubs.remove((ClienteInterface)registry.lookup(nombre));
-            } catch (NotBoundException ex) {
-                Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            } catch (AccessException ex) {
-                Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            }
             return true;
         } else {
             return false;
@@ -105,8 +91,10 @@ public class Tienda implements Agente{
     private void mandarProductoAClientes(Producto nuevo)
     {
         boolean success;
-        for(ClienteInterface stub:stubs)
+        ClienteInterface stub;
+        for (String key:usuarios.keySet())
         {
+            stub=usuarios.get(key);
             success=false;
             for(int i=0;i<2;i++)
             {
@@ -122,12 +110,7 @@ public class Tienda implements Agente{
             }
             if(!success)
             {
-                try {
-                    usuarios.remove(stub.getNombre());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                stubs.remove(stub);
+                usuarios.remove(key);
             }
             
         }
@@ -155,8 +138,10 @@ public class Tienda implements Agente{
     private void mandarOfertaAClientes(Oferta nuevo)
     {
         boolean success;
-        for(ClienteInterface stub:stubs)
+        ClienteInterface stub;
+        for(String key: usuarios.keySet())
         {
+            stub=usuarios.get(key);
             success=false;
             for(int i=0;i<2;i++)
             {
@@ -172,12 +157,7 @@ public class Tienda implements Agente{
             }
             if(!success)
             {
-                try {
-                    usuarios.remove(stub.getNombre());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                stubs.remove(stub);
+                usuarios.remove(key);
             }
             
         }
