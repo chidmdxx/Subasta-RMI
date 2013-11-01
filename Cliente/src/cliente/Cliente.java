@@ -28,6 +28,7 @@ public class Cliente implements ClienteInterface {
     Hashtable<String, Producto> productos;
     Agente tienda;
     Registry registry;
+    String nombre;
 
     /**
      * @param args the command line arguments
@@ -35,12 +36,16 @@ public class Cliente implements ClienteInterface {
     public void main(String[] args) {
         // TODO code application logic here
         try{
-        Registry registry = LocateRegistry.getRegistry();
+            registry = LocateRegistry.getRegistry();
             tienda=(Agente)registry.lookup("Agente");
             //el codigo del dr es:
             //String response = stub.sayHello();
 	    //System.out.println("response: " + response);
             //falta agregar la interfaz aqui
+            
+            ClienteApplet applet = new ClienteApplet();
+            applet.setVisible(true);
+            
         }catch (Exception e){
             System.err.println("Client exception: " + e.toString());
 	    e.printStackTrace();
@@ -72,6 +77,11 @@ public class Cliente implements ClienteInterface {
         } else {
             return false;
         }
+    }
+    
+    public void setNombre(String nombre){
+        
+        this.nombre = nombre;
     }
 
     public boolean RegistrarUsuario(String str) {

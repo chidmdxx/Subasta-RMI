@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package cliente;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -131,6 +132,11 @@ public class ClienteApplet extends javax.swing.JApplet {
         jLabel3.setText("Precio inicial");
 
         jButton2.setText("Poner a la venta");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Obtener lista");
 
@@ -159,12 +165,13 @@ public class ClienteApplet extends javax.swing.JApplet {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)
-                            .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jButton4)
                             .addComponent(jLabel4)
-                            .addComponent(jButton5))
+                            .addComponent(jButton5)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jButton1)
+                                .addComponent(jLabel2)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane4)
@@ -185,8 +192,8 @@ public class ClienteApplet extends javax.swing.JApplet {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(jButton1))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -210,7 +217,7 @@ public class ClienteApplet extends javax.swing.JApplet {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                         .addComponent(jButton5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 241, Short.MAX_VALUE)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(34, 34, 34))
         );
@@ -235,15 +242,46 @@ public class ClienteApplet extends javax.swing.JApplet {
         String str;      
         str = jTextField2.getText();
         
-        /*if(cliente.RegistrarUsuario(str)){
+        if(cliente.RegistrarUsuario(str)){
             jLabel5.setText("Conexón exitosa!");
             jDialog1.setVisible(true);
         }else{
             jLabel5.setText("Conexón fallida!");
             jDialog1.setVisible(true);
-        }*/
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+        String producto, precio;
+        
+        producto = jTextField1.getText();
+        precio = jTextField3.getText();
+        
+        
+        if(cliente.tienda.agregaProductoALaVenta(cliente.nombre, producto, Float.parseFloat(precio))){
+            jLabel5.setText("Conexón exitosa!");
+            jDialog1.setVisible(true);
+            
+        
+        }else
+            throw new RemoteException();
+        
+        
+        /*if(cliente.tienda.agregaProductoALaVenta(cliente.nombre, producto, Float.parseFloat(precio)));
+        {
+            jLabel5.setText("Conexón exitosa!");
+            jDialog1.setVisible(true);
+        }else{
+            jLabel5.setText("Conexón fallida!");
+            jDialog1.setVisible(true);
+        }
+        }*/
+
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
