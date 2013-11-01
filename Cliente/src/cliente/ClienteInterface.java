@@ -10,6 +10,7 @@ package cliente;
 import java.util.Vector; 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import datos.Producto;
 
 /**
  *
@@ -18,5 +19,5 @@ import java.rmi.RemoteException;
 public interface ClienteInterface extends Remote{
     
     boolean mandarPrecioNuevo( String producto, float nuevoPrecio ) throws RemoteException;
-    boolean mandarProductoNuevo(String producto) throws RemoteException;
+    boolean mandarProductoNuevo(Producto producto) throws RemoteException;
 }

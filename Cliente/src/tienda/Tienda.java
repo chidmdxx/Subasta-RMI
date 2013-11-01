@@ -99,7 +99,7 @@ public class Tienda implements Agente{
             for(int i=0;i<2;i++)
             {
                 try {
-                    success=stub.mandarProductoNuevo(nuevo.getNombreProducto());
+                    success=stub.mandarProductoNuevo(nuevo);
                 } catch (RemoteException ex) {
                     success=false;
                 }

@@ -95,4 +95,16 @@ public class Cliente implements ClienteInterface {
             return false;
         }
     }
+
+    @Override
+    public boolean mandarProductoNuevo(Producto producto) throws RemoteException {
+        if (!productos.containsKey(producto)) {
+
+            productos.put(producto.getNombreProducto(),producto);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
