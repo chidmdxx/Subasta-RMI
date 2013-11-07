@@ -7,6 +7,8 @@ package cliente;
 
 
 import datos.Producto;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
 import tienda.Agente;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -17,6 +19,8 @@ import java.util.Vector;
 //import datos.*;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import tienda.*;
 
 /**
@@ -36,8 +40,7 @@ public class Cliente implements ClienteInterface {
     public static void main(String[] args) {
         // TODO code application logic here
         try{
-            Registry registry = LocateRegistry.getRegistry();
-            Agente tienda=(Agente)registry.lookup("Agente");
+            
             //el codigo del dr es:
             //String response = stub.sayHello();
 	    //System.out.println("response: " + response);
@@ -106,5 +109,19 @@ public class Cliente implements ClienteInterface {
         } else {
             return false;
         }
+    }
+    
+    public boolean registrar(String nombre)
+    {
+        try {
+            Registry registry = LocateRegistry.getRegistry();
+            ClienteInterface stub = (ClienteInterface) UnicastRemoteObject.exportObject(this, 0);//Va 0 ahí? // creo que si
+            registry.bind(nombre, stub);
+            tienda=(Agente)registry.lookup("Agente");
+            tienda.registraUsuario(nombre);
+        } catch (RemoteException | NotBoundException | AlreadyBoundException ex) {
+            return false;
+        }
+        return true;
     }
 }

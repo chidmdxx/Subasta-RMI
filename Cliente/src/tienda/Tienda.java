@@ -66,9 +66,15 @@ public class Tienda implements Agente{
     
     public synchronized boolean borrarUsuario (String nombre) throws RemoteException
     {
+        Registry registry = LocateRegistry.getRegistry();
         if (usuarios.containsKey(nombre)) {
             System.out.println("Borrando usuario: " + nombre);
             usuarios.remove(nombre);
+            try {
+                registry.unbind(nombre);
+            } catch (    NotBoundException | AccessException ex) {
+                return true;
+            }
             return true;
         } else {
             return false;
@@ -110,7 +116,11 @@ public class Tienda implements Agente{
             }
             if(!success)
             {
-                usuarios.remove(key);
+                try {
+                    this.borrarUsuario(key);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
         }
@@ -157,7 +167,11 @@ public class Tienda implements Agente{
             }
             if(!success)
             {
-                usuarios.remove(key);
+                try {
+                    this.borrarUsuario(key);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
         }
@@ -172,10 +186,10 @@ public class Tienda implements Agente{
 
     public static void main(String[] args) {
         try {
-            Tienda tienda = new Tienda();Thread actualizarClientes=new Thread();
+            Tienda tienda = new Tienda();
             Agente stub = (Agente) UnicastRemoteObject.exportObject(tienda, 0);//Va 0 ahí? // creo que si
             Registry registry = LocateRegistry.getRegistry();
-            registry.bind("Agente", stub);
+            registry.rebind("Agente", stub);
             System.err.println("Server ready");
         } catch (Exception e) {
             System.out.println(e.getMessage());
