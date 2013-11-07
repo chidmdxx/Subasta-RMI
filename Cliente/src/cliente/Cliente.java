@@ -33,11 +33,11 @@ public class Cliente implements ClienteInterface {
     /**
      * @param args the command line arguments
      */
-    public void main(String[] args) {
+    public static void main(String[] args) {
         // TODO code application logic here
         try{
-            registry = LocateRegistry.getRegistry();
-            tienda=(Agente)registry.lookup("Agente");
+            Registry registry = LocateRegistry.getRegistry();
+            Agente tienda=(Agente)registry.lookup("Agente");
             //el codigo del dr es:
             //String response = stub.sayHello();
 	    //System.out.println("response: " + response);
