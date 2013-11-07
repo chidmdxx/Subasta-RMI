@@ -46,6 +46,11 @@ public class Cliente implements ClienteInterface {
         } catch (Exception ex) {
         }
     }*/
+    
+    public Cliente(){
+        
+        productos = new Hashtable<>();
+    }
 
     @Override
     public boolean mandarPrecioNuevo(String producto, float nuevoPrecio) throws RemoteException {

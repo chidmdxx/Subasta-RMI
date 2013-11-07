@@ -198,7 +198,7 @@ public class ClienteApplet extends javax.swing.JApplet {
                             .addComponent(jTextField1)
                             .addComponent(jTextField3)
                             .addComponent(jTextField4)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane1, 0, 0, Short.MAX_VALUE)))
                     .addComponent(jButton5)
                     .addComponent(jLabel4)
                     .addComponent(jButton2))
@@ -266,9 +266,11 @@ public class ClienteApplet extends javax.swing.JApplet {
         cliente.nombre = str;
 
         if (cliente.RegistrarUsuario(str)) {
+            jLabel5.setSize(100, 50);
             jLabel5.setText("Conexón exitosa!");
             jDialog1.setVisible(true);
         } else {
+            jLabel5.setSize(100, 50);
             jLabel5.setText("Conexón fallida!");
             jDialog1.setVisible(true);
         }
