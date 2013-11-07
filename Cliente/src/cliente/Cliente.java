@@ -37,23 +37,7 @@ public class Cliente implements ClienteInterface {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        try{
-            
-            //el codigo del dr es:
-            //String response = stub.sayHello();
-	    //System.out.println("response: " + response);
-            //falta agregar la interfaz aqui
-            
-            ClienteApplet applet = new ClienteApplet();
-            applet.setVisible(true);
-            
-        }catch (Exception e){
-            System.err.println("Client exception: " + e.toString());
-	    e.printStackTrace();
-        }
-    }
+   
     /*
     public void encontrarTienda() {
         try {
