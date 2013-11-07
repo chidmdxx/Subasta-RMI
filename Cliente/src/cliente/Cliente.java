@@ -104,11 +104,15 @@ public class Cliente implements ClienteInterface {
     
     public boolean borrarUsuario() {
          try {
-            Registry registry = LocateRegistry.getRegistry();
-            registry.unbind(nombre);
             tienda.borrarUsuario(nombre);
-        } catch (RemoteException | NotBoundException ex) {
-            return false;
+        } catch (RemoteException ex) {
+             try {
+                 Registry registry = LocateRegistry.getRegistry();
+                 registry.unbind(nombre);
+                 return true;
+             } catch (     RemoteException | NotBoundException ex1) {
+                 return false;
+             }
         }
         return true;
     }
