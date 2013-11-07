@@ -88,15 +88,29 @@ public class Cliente implements ClienteInterface {
     }
 
     public boolean RegistrarUsuario(String str) {
-        try {
-            if (tienda.registraUsuario(str)) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (RemoteException e) {
+         try {
+             nombre=str;
+            Registry registry = LocateRegistry.getRegistry();
+            ClienteInterface stub = (ClienteInterface) UnicastRemoteObject.exportObject(this, 0);//Va 0 ahí? // creo que si
+            registry.bind(nombre, stub);
+            tienda=(Agente)registry.lookup("Agente");
+            tienda.registraUsuario(nombre);
+        } catch (RemoteException | NotBoundException | AlreadyBoundException ex) {
             return false;
         }
+        return true;
+    }
+    
+    
+    public boolean borrarUsuario() {
+         try {
+            Registry registry = LocateRegistry.getRegistry();
+            registry.unbind(nombre);
+            tienda.borrarUsuario(nombre);
+        } catch (RemoteException | NotBoundException ex) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -111,17 +125,4 @@ public class Cliente implements ClienteInterface {
         }
     }
     
-    public boolean registrar(String nombre)
-    {
-        try {
-            Registry registry = LocateRegistry.getRegistry();
-            ClienteInterface stub = (ClienteInterface) UnicastRemoteObject.exportObject(this, 0);//Va 0 ahí? // creo que si
-            registry.bind(nombre, stub);
-            tienda=(Agente)registry.lookup("Agente");
-            tienda.registraUsuario(nombre);
-        } catch (RemoteException | NotBoundException | AlreadyBoundException ex) {
-            return false;
-        }
-        return true;
-    }
 }
