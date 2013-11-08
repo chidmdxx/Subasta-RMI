@@ -13,7 +13,7 @@ public class Producto implements java.io.Serializable{
     String vendedor;
     String producto;
     float precioInicial;
-    float precioActual;
+    public float precioActual;
     
     /*Constructor*/
     public Producto( String v, String p, float pi ) {

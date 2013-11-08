@@ -8,17 +8,38 @@ import java.rmi.RemoteException;
 import java.util.Vector;
 import datos.*;
 
+
+
+import datos.Producto;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import tienda.Agente;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Hashtable;
+import java.util.Vector;
+//import datos.*;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+//import tienda.*;
+
+
 /**
  *
  * @author Me
  */
-public class ClienteApplet extends javax.swing.JApplet {
+public class ClienteApplet extends javax.swing.JApplet implements ClienteInterface{
 
     /**
      * Initializes the applet ClienteApplet
      */
-    Cliente cliente;
 
+   
     @Override
     public void init() {
         /* Set the Nimbus look and feel */
@@ -48,7 +69,7 @@ public class ClienteApplet extends javax.swing.JApplet {
         try {
             java.awt.EventQueue.invokeAndWait(new Runnable() {
                 public void run() {
-                    cliente = new Cliente();
+                    
                     initComponents();
                 }
             });
@@ -56,6 +77,113 @@ public class ClienteApplet extends javax.swing.JApplet {
             ex.printStackTrace();
         }
     }
+    
+   
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Rachid
+ */
+
+
+    Hashtable<String, Producto> productos;
+    Agente tienda;
+    Registry registry;
+    String nombre;
+     DefaultListModel listaPrint=new DefaultListModel();
+
+    /**
+     * @param args the command line arguments
+     */
+   
+    /*
+    public void encontrarTienda() {
+        try {
+            Registry registry = LocateRegistry.getRegistry();
+            tienda = (Agente) registry.lookup("Agente");
+        } catch (Exception ex) {
+        }
+    }*/
+    
+   
+
+    @Override
+    public boolean mandarPrecioNuevo(String producto, float nuevoPrecio) throws RemoteException {
+        if (productos.containsKey(producto)) {
+
+            Producto infoProd;
+            infoProd = (Producto) productos.get(producto);
+
+            if (infoProd.actualizaPrecio(nuevoPrecio)) {
+
+                return true;
+
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    public void setNombre(String nombre){
+        
+        this.nombre = nombre;
+    }
+
+    public boolean RegistrarUsuario(String str) {
+         try {
+             listaPrint.clear();
+
+             nombre=str;
+             productos = new Hashtable<>();
+            Registry registry = LocateRegistry.getRegistry();
+            ClienteInterface stub = (ClienteInterface) UnicastRemoteObject.exportObject(this, 0);//Va 0 ahí? // creo que si
+            registry.bind(nombre, stub);
+            tienda=(Agente)registry.lookup("Agente");
+            tienda.registraUsuario(nombre);
+        } catch (RemoteException | NotBoundException | AlreadyBoundException ex) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    public boolean borrarUsuario() {
+         try {
+            tienda.borrarUsuario(nombre);
+        } catch (RemoteException ex) {
+             try {
+                 Registry registry = LocateRegistry.getRegistry();
+                 registry.unbind(nombre);
+                 return true;
+             } catch (     RemoteException | NotBoundException ex1) {
+                 return false;
+             }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean mandarProductoNuevo(Producto producto) throws RemoteException {
+        if (!productos.containsKey(producto)) {
+
+            productos.put(producto.getNombreProducto(),producto);
+            listaPrint.addElement(producto.getNombreProducto());
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+
+
 
     /**
      * This method is called from within the init() method to initialize the
@@ -87,7 +215,7 @@ public class ClienteApplet extends javax.swing.JApplet {
         jButton5 = new javax.swing.JButton();
         jTextField4 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        jList1 =  new javax.swing.JList(listaPrint);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -263,9 +391,9 @@ public class ClienteApplet extends javax.swing.JApplet {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String str;
         str = jTextField2.getText();
-        cliente.nombre = str;
+        nombre = str;
 
-        if (cliente.RegistrarUsuario(str)) {
+        if (RegistrarUsuario(str)) {
             jLabel5.setSize(100, 50);
             jLabel5.setText("Conexón exitosa!");
             jDialog1.setVisible(true);
@@ -288,7 +416,7 @@ public class ClienteApplet extends javax.swing.JApplet {
 
 
         try {
-            if (cliente.tienda.agregaProductoALaVenta(cliente.nombre, producto, Float.parseFloat(precio))) {
+            if (tienda.agregaProductoALaVenta(nombre, producto, Float.parseFloat(precio))) {
                 jLabel5.setText("Conexón exitosa!");
                 jDialog1.setVisible(true);
 
@@ -317,16 +445,32 @@ public class ClienteApplet extends javax.swing.JApplet {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         Vector<Producto> catalogo;
         try {
-            catalogo = cliente.tienda.obtieneCatalogo();
-            jList1.setListData(catalogo);
+            catalogo = tienda.obtieneCatalogo();
+             for(Producto p:catalogo)
+            {
+                
+                if (!productos.containsKey(p.getNombreProducto()))
+            {
+                productos.put(p.getNombreProducto(), p);
+                listaPrint.addElement(p.getNombreProducto());
+            }
+                else
+                {
+                    Producto update=productos.get(p.getNombreProducto());
+                    update.precioActual=p.precioActual;
+                }
+            }
+            
+           
         } catch (RemoteException e) {        
         }
+       
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         Producto prodSeleccionado;
         
-        prodSeleccionado = (Producto)jList1.getSelectedValue();
+        prodSeleccionado = productos.get((String)jList1.getSelectedValue());
         jTextArea3.setText((Float.toString(prodSeleccionado.getPrecioActual())));
     }//GEN-LAST:event_jList1MouseClicked
    
@@ -335,11 +479,11 @@ public class ClienteApplet extends javax.swing.JApplet {
         Producto prodSeleccionado;      
         String precio;
         
-        prodSeleccionado = (Producto)jList1.getSelectedValue();
+        prodSeleccionado = productos.get((String)jList1.getSelectedValue());
         precio = jTextField4.getText();
         
         try{
-            if(cliente.tienda.agregaOferta(cliente.nombre, prodSeleccionado.getNombreProducto(), Float.parseFloat(precio))){
+            if(tienda.agregaOferta(nombre, prodSeleccionado.getNombreProducto(), Float.parseFloat(precio))){
                 jLabel5.setText("Oferta exitosa.");
                 jDialog1.setVisible(true);
             }else{
@@ -353,7 +497,7 @@ public class ClienteApplet extends javax.swing.JApplet {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if ( cliente.borrarUsuario()) {
+        if ( borrarUsuario()) {
             jLabel5.setText("Borrado exitoso!");
             jDialog1.setVisible(true);
         } else {

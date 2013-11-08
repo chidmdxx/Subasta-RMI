@@ -119,7 +119,7 @@ public class Tienda implements Agente{
                 try {
                     this.borrarUsuario(key);
                 } catch (RemoteException ex) {
-                    Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(Tienda.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             
