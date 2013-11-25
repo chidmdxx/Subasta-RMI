@@ -1,0 +1,6 @@
+
+javac -d . src\*.java
+
+java -Djava.rmi.server.codebase=file:/RMI/ tienda.Tienda
+
+rmiregistry
